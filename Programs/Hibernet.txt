@@ -1,0 +1,709 @@
+package in.serosoft.training;
+
+import javax.persistence.Embeddable;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
+public class Address {
+	private int hno;
+	private String street;
+	private String city;
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
+import lombok.Data;
+
+@Entity
+@Data
+public class Course {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sg")
+	@SequenceGenerator(name = "sg", sequenceName = "course_seq", initialValue = 1001)
+	private int code;
+	private String name;
+	private String dept;
+	public Course(String name, String dept) {
+		super();
+		this.name = name;
+		this.dept = dept;
+	}
+	
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class CourseEntry {
+
+	public static void main(String[] args) {
+		Session session=Utililty.getSessionFactory().openSession();
+		Transaction tr=session.beginTransaction();
+		session.save(new Course("java","cs"));
+		session.save(new Course("laser","ec"));
+		session.save(new Course("structure","civil"));
+		session.save(new Course("mcdesign","mech"));
+		tr.commit();
+		
+		session.close();
+		System.out.println("Data Stored....!");
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class EmpDeletion {
+
+	public static void main(String[] args) {
+		
+		//create a session object
+		Session session=Utililty.getSessionFactory().openSession();
+		//begin the transaction
+		Employee emp=new Employee(); emp.setEno(113);
+		Transaction tr=session.beginTransaction();
+		//call delete method
+		session.delete(emp);
+		//commit the transaction
+		tr.commit();
+		//close the session
+		session.close();
+		System.out.println("Deleted ....");
+		
+	}
+
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
+public class EmpEntry {
+
+	public static void main(String[] args) {
+	
+		
+		Employee e1=new Employee(); e1.setEno(111); e1.setEname("Manish"); e1.setSalary(50000); e1.setDesg("SE");
+		Employee e2=new Employee(); e2.setEno(112); e2.setEname("Priya"); e2.setSalary(60000); e2.setDesg("SSE");
+		Employee e3=new Employee(); e3.setEno(113); e3.setEname("Anup"); e3.setSalary(70000); e3.setDesg("TL");
+		Employee e4=new Employee(); e4.setEno(114); e4.setEname("Deepak"); e4.setSalary(40000); e4.setDesg("SE");
+		Employee e5=new Employee(); e5.setEno(115); e5.setEname("Gaurav"); e5.setSalary(660000); e5.setDesg("SSE");
+		Employee e6=new Employee(); e6.setEno(116); e6.setEname("Riya"); e6.setSalary(30000); e6.setDesg("TL");
+
+		//Configuration config=new Configuration().configure("abc.cfg.xml");
+		//Configuration config=new Configuration().configure();
+		//Session session=config.buildSessionFactory().openSession();
+		/*
+		SessionFactory sf=config.buildSessionFactory();
+		Session session=sf.openSession();
+		*/
+		Session session=Utililty.getSessionFactory().openSession();
+		Transaction tr=session.beginTransaction();
+		session.save(e1);
+		session.save(e2);
+		session.save(e3);
+		session.save(e4);
+		session.save(e5);
+		session.save(e6);
+		tr.commit();
+		
+		session.close();
+		System.out.println("Data Stored....!");
+		
+		
+		
+	}
+
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "employee")
+@NamedQuery(name = "allEmployeeQuery",query="from Employee")
+@NamedQuery(name = "incrementQuery", query="update Employee set sal=sal+500")
+public class Employee {
+	@Id
+	@Column(name="eno")
+	private int eno;
+	@Column(name="ename", length = 20)
+	private String ename;
+	@Column(name = "sal")
+	private int salary;
+	private String desg;
+	
+	public String getDesg() {
+		return desg;
+	}
+	public void setDesg(String desg) {
+		this.desg = desg;
+	}
+	public int getEno() {
+		return eno;
+	}
+	public void setEno(int eno) {
+		this.eno = eno;
+	}
+	public String getEname() {
+		return ename;
+	}
+	public void setEname(String ename) {
+		this.ename = ename;
+	}
+	public int getSalary() {
+		return salary;
+	}
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
+	@Override
+	public String toString() {
+		return "Employee [eno=" + eno + ", ename=" + ename + ", salary=" + salary + ", desg=" + desg + "]";
+	}
+	
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class EmpUpdate {
+
+	public static void main(String[] args) {
+		//create a session object
+		Session session=Utililty.getSessionFactory().openSession();
+		//begin the transaction
+		Employee emp=new Employee(); 
+		emp.setEno(112);
+		emp.setEname("amit");
+		emp.setSalary(55000);
+		emp.setDesg("QAEng");
+		Transaction tr=session.beginTransaction();
+		//call delete method
+		session.update(emp);
+		//commit the transaction
+		tr.commit();
+		//close the session
+		session.close();
+		System.out.println("Updated ....");
+		
+	}
+
+}
+
+
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class Faculty implements Serializable {
+
+	@Id
+	private int code;
+	private Name name;
+	private String qualification;
+	private int experience;
+	private Address address;
+	
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class FacultyEntry {
+
+	public static void main(String[] args) {
+		
+		
+		Faculty f1=new Faculty(111,new Name("aa","bb","cc"),"MTech",5, new Address(555,"abroad","indore"));
+		Faculty f2=new Faculty(112,new Name("dd","ee","ff"),"MTech",12,new Address(155,"newmarket","bhopal"));
+		Faculty f3=new Faculty(113,new Name("gg","hh","ii"),"BTech",15,new Address(345,"andheri","mumbai"));
+		Faculty f4=new Faculty(114,new Name("jj","kk","ll"),"BTech",5,new Address(510,"canatplace","delhi"));
+		Faculty f5=new Faculty(115,new Name("mm","nn","oo"),"ME",9,new Address(65,"mgroad","ujjain"));
+		
+		//create session object
+		Session session=Utililty.getSessionFactory().openSession();
+		//begin transaction
+		Transaction tr=session.beginTransaction();
+		//save
+		session.save(f1); session.save(f2); session.save(f3); session.save(f4); session.save(f5);
+		//commit transaction
+		tr.commit();
+		//close the session
+		session.close();
+		
+		System.out.println("Data Stored...!");
+	}
+
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class HQLDelete {
+
+	public static void main(String[] args) {
+		Session session=Utililty.getSessionFactory().openSession();
+		String hql="delete from Employee where eno=117";
+		Query query=session.createQuery(hql);
+		Transaction tr=session.beginTransaction();
+		int n=query.executeUpdate();
+		tr.commit();
+		System.out.println(n+" rows modified..!");
+		session.close();
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+public class HQLExampleOne {
+
+	public static void main(String[] args) {
+		
+		Session session=Utililty.getSessionFactory().openSession();
+		//Query query=session.createQuery("from Employee where desg='TL' and sal>=50000");
+		Query query=session.getNamedQuery("allEmployeeQuery");
+		List<Employee> employees=query.list();
+		for(Employee employee:employees) {
+			System.out.println(employee);
+		}
+		session.close();
+	}
+
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class HQLUpdate {
+
+	public static void main(String[] args) {
+		Session session=Utililty.getSessionFactory().openSession();
+		//String hql="update Employee set sal=sal+500";
+		//Query query=session.createQuery(hql);
+		Query query=session.getNamedQuery("incrementQuery");
+		Transaction tr=session.beginTransaction();
+		int n=query.executeUpdate();
+		tr.commit();
+		System.out.println(n+" rows modified..!");
+		session.close();
+	}
+
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.util.Scanner;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class HQLUpdateTwo {
+
+	public static void main(String[] args) {
+		Session session=Utililty.getSessionFactory().openSession();
+		String hql="update Employee set sal=sal+:amount where eno=:id";
+		Query query=session.createQuery(hql);
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter Eno : ");
+		int eno=sc.nextInt();
+		System.out.println("Enter Amount : ");
+		int amt=sc.nextInt();
+		
+		query.setParameter("id", eno);
+		query.setParameter("amount", amt);
+		
+		Transaction tr=session.beginTransaction();
+		int n=query.executeUpdate();
+		tr.commit();
+		System.out.println(n+" rows modified..!");
+		session.close();
+
+	}
+
+}
+-------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+
+import java.io.Serializable;
+
+import javax.persistence.Embeddable;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
+public class Name implements Serializable{
+	private String fname;
+	private String mname;
+	private String lname;
+}
+-------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+
+public class QBCExampleOne {
+
+	public static void main(String[] args) {
+		//fetching employees data using Criteria interface
+		
+		
+		//session object
+		Session session=Utililty.getSessionFactory().openSession();
+		//criteria
+		Criteria criteria=session.createCriteria(Faculty.class);
+		//list method call
+		List<Faculty> faculties=criteria.list();
+		
+		//faculties.forEach((faculty)->System.out.println(faculty.getName()+","+faculty.getQualification()));
+		
+		for(Faculty faculty:faculties) {
+			System.out.println(faculty);
+		}
+		
+		
+		
+		//session close
+		session.close();
+	}
+
+}
+-------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
+
+public class QBCFilteration {
+
+	public static void main(String[] args) {
+	
+		Session session=Utililty.getSessionFactory().openSession();
+		Criteria criteria=session.createCriteria(Faculty.class);
+		
+		//Criterion crt1=Restrictions.between("experience", 10, 12);
+		//Criterion crt1=Restrictions.in("qualification", "BTech","ME");
+		Criterion crt1=Restrictions.eq("name.fname", "mm");
+		criteria.add(crt1);
+		
+		/*
+		//filteration
+		Criterion crt1=Restrictions.gt("experience", 5);
+		//criteria.add(crt1);
+		Criterion crt2=Restrictions.eq("qualification", "MTech");
+		//criteria.add(crt2);
+		Criterion crt3=Restrictions.or(crt1,crt2);
+		criteria.add(crt3);
+		*/
+		
+		List<Faculty> faculties=criteria.list();
+		for(Faculty faculty:faculties) {
+			System.out.println(faculty.getName());
+			System.out.println(faculty.getExperience());
+			System.out.println(faculty.getQualification());
+			System.out.println("_________________________________________________________");
+		}
+		session.close();
+	}
+
+}
+------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+
+public class QBCGrouping {
+
+	public static void main(String[] args) {
+
+		Session session=Utililty.getSessionFactory().openSession();
+		Criteria criteria=session.createCriteria(Employee.class);
+		Projection proj1=Projections.groupProperty("desg");
+		Projection proj2=Projections.sum("salary");
+		Projection proj3=Projections.count("desg");
+		Projection proj4=Projections.max("salary");
+		Projection proj5=Projections.min("salary");
+		Projection proj6=Projections.avg("salary");
+		
+		ProjectionList pList=Projections.projectionList();
+		pList.add(proj1); pList.add(proj2); pList.add(proj3); pList.add(proj4); pList.add(proj5); pList.add(proj6);
+		criteria.setProjection(pList);
+		
+		
+		List<Object[]> employees=criteria.list();
+		
+		for(Object ar[]:employees) {
+			for(Object item:ar) {
+				System.out.println(item);
+			}
+			System.out.println("-------------------------------------------");
+		}
+		
+		session.close();
+		
+		
+	}
+
+}
+--------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+
+public class QBCOrdering {
+
+	public static void main(String[] args) {
+
+		Session session=Utililty.getSessionFactory().openSession();
+		Criteria criteria=session.createCriteria(Faculty.class);
+		
+		Order ord1=Order.asc("experience");
+		Order ord2=Order.asc("qualification");
+		
+		criteria.addOrder(ord1); criteria.addOrder(ord2);
+		
+		List<Faculty> faculties=criteria.list();
+		for(Faculty faculty:faculties) {
+			System.out.println(faculty.getName());
+			System.out.println(faculty.getExperience());
+			System.out.println(faculty.getQualification());
+			System.out.println("_________________________________________________________");
+		}
+		session.close();
+
+	}
+
+}
+------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+
+public class QBCProjectionExampleOne {
+
+	public static void main(String[] args) {
+
+		Session session=Utililty.getSessionFactory().openSession();
+		Criteria criteria=session.createCriteria(Faculty.class);
+		Criterion crt=Restrictions.gt("experience", 5);
+		criteria.add(crt);
+		Projection pr1=Projections.property("name.fname");
+		criteria.setProjection(pr1);
+		List<String> values=criteria.list();
+		for(String value:values) {
+			System.out.println(value);
+		}
+		
+		/*
+		Projection pr1=Projections.property("experience");
+		criteria.setProjection(pr1);
+		List<Integer> numbers=criteria.list();
+			for(Integer number:numbers) {
+			System.out.println(number);
+		}
+		*/
+		session.close();
+
+	}
+
+}
+------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+
+public class QBCProjectionExampleTwo {
+
+	public static void main(String[] args) {
+	
+		Session session=Utililty.getSessionFactory().openSession();
+		Criteria criteria=session.createCriteria(Employee.class);
+		Projection proj1=Projections.property("ename");
+		Projection proj2=Projections.property("salary");
+		ProjectionList pList=Projections.projectionList();
+		pList.add(proj1); pList.add(proj2);
+		criteria.setProjection(pList);
+		
+		
+		List<Object[]> employees=criteria.list();
+		
+		for(Object ar[]:employees) {
+			for(Object item:ar) {
+				System.out.println(item);
+			}
+			System.out.println("-------------------------------------------");
+		}
+		
+		session.close();
+		
+	}
+
+}
+------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import java.util.Scanner;
+
+import org.hibernate.Session;
+
+public class SearchFaculty {
+
+	public static void main(String[] args) {
+
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter Faculty Code : ");
+		int code=sc.nextInt();
+		
+		//Query By Id (we fetch the data by passing id) 
+		
+		//create session object
+		Session session=Utililty.getSessionFactory().openSession();
+		
+		//call get/load method
+		Faculty faculty=session.get(Faculty.class, code);
+		
+		//close session object
+		
+		System.out.println(faculty.getCode());
+		System.out.println(faculty.getName().getFname());
+		System.out.println(faculty.getName().getMname());
+		System.out.println(faculty.getName().getLname());
+		System.out.println(faculty.getQualification());
+		System.out.println(faculty.getExperience());
+		
+		session.close();
+	}
+
+}
+
+------------------------------------------------------------------------------------
+package in.serosoft.training;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+public class Utililty {
+	public static SessionFactory getSessionFactory() {
+		Configuration config=new Configuration().configure();
+		SessionFactory sessionFactory=config.buildSessionFactory();
+		return sessionFactory;
+	}
+}
+------------------------------------------------------------------------------------
+hibernet.cfg.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.password">root</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mydata</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+	    <property name="hbm2ddl.auto">update</property>
+	    <property name="show_sql">true</property>
+	    <mapping class="in.serosoft.training.Employee"/>
+	    <mapping class="in.serosoft.training.Faculty"/>
+	    <mapping class="in.serosoft.training.Course"/>
+    </session-factory>
+</hibernate-configuration>
+
+

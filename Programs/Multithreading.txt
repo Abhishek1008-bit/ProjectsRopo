@@ -1,0 +1,388 @@
+import java.util.Scanner;
+
+public class Emp extends Thread {
+	private int eno;
+	private int salary;
+	public Emp(int eno, int salary) {this.eno=eno; this.salary=salary;}
+
+	public void run() {
+		processSalary();
+	}
+	
+	public void processSalary() {
+		System.out.println("salary of "+eno+" : "+salary);
+		if(eno==112) {
+			Scanner sc=new Scanner(System.in);
+			sc.nextInt();
+		}
+		System.out.println("hra of "+eno+" : "+(salary*20/100));
+		System.out.println("ca of "+eno+" : "+(salary*10/100));
+		System.out.println("ma of "+eno+" : "+(salary*5/100));
+		
+	}
+	
+	public static void main(String args[]) {
+		Emp e1=new Emp(111,10000);
+		Emp e2=new Emp(112,20000);
+		Emp e3=new Emp(113,30000);
+		Emp e4=new Emp(114,40000);
+		e1.start(); e2.start();
+		e3.start(); e4.start();
+		/*
+		e1.processSalary();
+		e2.processSalary();
+		e3.processSalary();
+		e4.processSalary();
+		*/
+		
+	}
+}
+--------------------------------------------------------------------------------------
+public class MultiThreadedExample {
+
+	static int s1,s2,s3,sum;
+	
+	public static void main(String[] args) throws Exception {
+		long start=System.currentTimeMillis();
+		// adding 1 to 50000 using multiple threads
+
+		Thread t1=new Thread(()->{
+			for(int i=1;i<=17000;i++) {
+				String name=Thread.currentThread().getName();
+				//System.out.println("Adding "+i+" To Sum By "+name);
+				s1=s1+i;
+			}
+		}); t1.setName("Abhishek"); t1.start();
+		
+		Thread t2=new Thread(()->{
+			for(int i=17001;i<=34000;i++) {
+				String name=Thread.currentThread().getName();
+				//System.out.println("Adding "+i+" To Sum By "+name);
+				s2=s2+i;
+			}
+		}); t2.setName("Sumit"); t2.start();
+		
+		Thread t3=new Thread(()->{
+			for(int i=34001;i<=50000;i++) {
+				String name=Thread.currentThread().getName();
+				//System.out.println("Adding "+i+" To Sum By "+name);
+				s3=s3+i;
+			}
+		}); t3.setName("Manas"); t3.start();
+		
+		t1.join(); t2.join(); t3.join();
+		System.out.println("Addition By Abhishek : "+s1);
+		System.out.println("Addition By Sumit    : "+s2);
+		System.out.println("Addition By Manas    : "+s3);
+		sum=s1+s2+s3;
+		System.out.println("Addition : "+sum);
+		
+		long stop=System.currentTimeMillis();
+		System.out.println("Started at : "+start);
+		System.out.println("Stoped at : "+stop);
+		System.out.println("Time Taken : "+(stop-start));
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
+public class MultiThreadedReading {
+
+	public static void main(String[] args) throws Exception {
+		System.out.println("Main Thread Started....!");
+		Thread t1=new Thread(()->{
+			//task-1
+			try {
+			String name = Thread.currentThread().getName();
+			FileInputStream fis = new FileInputStream("d:/data/info1.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+			while (true) {
+				String line = br.readLine();
+				if (line == null)
+					break;
+				System.out.println(name + " => " + line);
+			}
+			br.close();
+			fis.close();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		});
+		t1.setName("ReaderOneThread ");
+		t1.start();
+		
+		
+		Thread t2=new Thread(()->{
+			int cnt=0;
+			//task-2
+			try {
+				String name = Thread.currentThread().getName();
+				FileInputStream fis = new FileInputStream("d:/data/info2.txt");
+				BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+				while (true) {
+					String line = br.readLine();
+					if (line == null)
+						break;
+					System.out.println(name + " => " + line);
+					//Thread.sleep(100);
+					/*
+					cnt++;
+					if(cnt==4) {
+						//System.out.println(10/0);
+						//Thread.currentThread().stop();
+						Thread.sleep(25000); //cause the running thread to sleep for given milliseconds.
+					}
+					*/
+				}
+				br.close();
+				fis.close();
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+		});
+		
+		t2.setName("ReaderTwoThread ");
+		t2.start();
+		//here I want main thread to be blocked till the t1 and t2 thread goes to dead state
+		
+		t1.join();//cause running thread (main) to blocked till the invoking thread (t1) goes to dead state
+		t2.join();//cause running thread (main) to blocked till the invoking thread (t2) goes to dead state.
+		System.out.println("Reading For Both Files Completed.........!!!!!!");
+		System.out.println("END OF MAIN.............................!!!!!!!!");
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+public class MultiThreadingExampleFour {
+
+	public static void main(String[] args) {
+		
+		Thread t1=new Thread(()->{
+			String name=Thread.currentThread().getName();
+			for(int i=1; i<=10;i++) {
+				System.out.println(name+"=>2 x "+i+" = "+2*i);
+			}
+		});
+		Thread t2=new Thread(()->{
+			String name=Thread.currentThread().getName();
+			for(int i=1; i<=10;i++) {
+				System.out.println(name+"=>3 x "+i+" = "+3*i);
+			}
+		});
+		Thread t3=new Thread(()->{String name=Thread.currentThread().getName();
+		for(int i=1; i<=10;i++) {
+			System.out.println(name+"=>4 x "+i+" = "+4*i);
+		}});
+		t1.start();
+		t2.start();
+		t3.start();
+	}
+
+}
+--------------------------------------------------------------------------------------
+
+
+public class MultiThreadingExampleThree {
+
+	public static void main(String[] args) {
+		
+		Thread t1=new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				String name=Thread.currentThread().getName();
+				for(int i=1; i<=10;i++) {
+					System.out.println(name+"=>2 x "+i+" = "+2*i);
+				}
+				
+			}
+			
+		});
+		Thread t2=new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				String name=Thread.currentThread().getName();
+				for(int i=1; i<=10;i++) {
+					System.out.println(name+"=>3 x "+i+" = "+3*i);
+				}
+				
+			}
+			
+		});
+		Thread t3=new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				String name=Thread.currentThread().getName();
+				for(int i=1; i<=10;i++) {
+					System.out.println(name+"=>4 x "+i+" = "+4*i);
+				}
+				
+			}
+			
+		});
+		t1.setName("First ");		t2.setName("Second ");		t3.setName("Third ");;
+		t1.start(); t2.start(); t3.start();
+	}
+
+}
+--------------------------------------------------------------------------------------
+public class MultiThreadingExampleTwo {
+
+	public static void main(String[] args) {
+		
+		//suppose we need to perform 3 task concurrently.
+		//for each task we are creating a separate thread object.
+		
+		Thread t1=new Thread(new TaskOneRunnable());
+		t1.start();
+		
+		
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+public class SingleThreadedExample {
+	static int sum;
+	
+	public static void main(String[] args) throws Exception {
+		
+		long start=System.currentTimeMillis();
+		
+		Thread t1=new Thread(()->{
+			for(int i=1;i<=50000;i++) {
+				String name=Thread.currentThread().getName();
+				System.out.println("Adding "+i+" To Sum By "+name);
+				sum=sum+i;
+			}
+		}); t1.setName("Dharmendra"); t1.start();	
+		
+		t1.join();
+		System.out.println("Sum "+sum);
+		
+		long stop=System.currentTimeMillis();
+		
+		System.out.println("Started at : "+start);
+		System.out.println("Stoped at : "+stop);
+		System.out.println("Time Taken : "+(stop-start));
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
+public class SingleThreadedReading {
+
+	public static void main(String[] args) throws Exception {
+
+		String name = Thread.currentThread().getName();
+
+		FileInputStream fis1 = new FileInputStream("d:/data/info1.txt");
+
+		BufferedReader br1 = new BufferedReader(new InputStreamReader(fis1));
+		while (true) {
+			String line = br1.readLine();
+			if (line == null)
+				break;
+			System.out.println(name + " => " + line);
+		}
+		br1.close();
+		fis1.close();
+		
+
+		FileInputStream fis2 = new FileInputStream("d:/data/info2.txt");
+
+		BufferedReader br2 = new BufferedReader(new InputStreamReader(fis2));
+		while (true) {
+			String line = br2.readLine();
+			if (line == null)
+				break;
+			System.out.println(name + " => " + line);
+		}
+		br2.close();
+		fis2.close();
+	}
+
+}
+--------------------------------------------------------------------------------------
+public class TablePrinter {
+
+	public static void main(String[] args) {
+		
+		TaskOne t1=new TaskOne(); t1.setName("PrinterTwo");
+		TaskTwo t2=new TaskTwo(); t2.setName("PrinterThree");
+		TaskThree t3=new TaskThree();t3.setName("PrinterFour");
+		t1.start();
+		t2.start();
+		t3.start();
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+public class TaskOne extends Thread {
+	public void run() {
+		String name=Thread.currentThread().getName();
+		for(int i=1; i<=10;i++) {
+			System.out.println(name+"=>2 x "+i+" = "+2*i);
+		}
+	}
+}
+-------------------------------------------------------------------------------------
+public class TaskOneRunnable implements Runnable {
+
+	public void run() {
+		String name=Thread.currentThread().getName();
+		for(int i=1; i<=10;i++) {
+			System.out.println(name+"=>2 x "+i+" = "+2*i);
+		}
+	}
+
+}
+-------------------------------------------------------------------------------------
+public class TaskThree extends Thread {
+	public void run() {
+		String name=Thread.currentThread().getName();
+		for(int i=1; i<=10;i++) {
+			System.out.println(name+"=>4 x "+i+" = "+4*i);
+		}
+	}
+}
+-------------------------------------------------------------------------------------
+public class TaskTwo extends Thread {
+	public void run() {
+		String name=Thread.currentThread().getName();
+		for(int i=1; i<=10;i++) {
+			System.out.println(name+"=>3 x "+i+" = "+3*i);
+		}
+	}
+}
+-----------------------------------------------------------------------------------
+public class Test extends Thread {
+	public void run() {
+		String name=Thread.currentThread().getName();
+		for(int i=1; i<=10;i++) {
+			System.out.println(name+"=>2 x "+i+" = "+2*i);
+		}
+		for(int i=1; i<=10;i++) {
+			System.out.println(name+"=>3 x "+i+" = "+3*i);
+		}
+		for(int i=1; i<=10;i++) {
+			System.out.println(name+"=>4 x "+i+" = "+4*i);
+		}
+	}
+	public static void main(String args[]) {
+		Test t=new Test(); t.setName("TestThread ");
+		t.start();
+		
+	}
+}
+-----------------------------------------------------------------------------------

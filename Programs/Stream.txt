@@ -1,0 +1,242 @@
+package streams;
+
+public class Emp {
+	private int code;
+	private String name;
+	private String desg;
+	private int sal;
+	
+	
+	public Emp() {
+		super();
+	}
+	public Emp(int code, String name, String desg, int sal) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.desg = desg;
+		this.sal = sal;
+	}
+	public int getCode() {
+		return code;
+	}
+	public void setCode(int code) {
+		this.code = code;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDesg() {
+		return desg;
+	}
+	public void setDesg(String desg) {
+		this.desg = desg;
+	}
+	public int getSal() {
+		return sal;
+	}
+	public void setSal(int sal) {
+		this.sal = sal;
+	}
+	@Override
+	public String toString() {
+		return "Emp [code=" + code + ", name=" + name + ", desg=" + desg + ", sal=" + sal + "]";
+	}
+	
+	
+}
+--------------------------------------------------------------------------------------
+package streams;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+public class EmpOperations {
+
+	public static void main(String[] args) {
+
+		List<Emp> employees = Arrays.asList(new Emp(111, "AAA", "SE", 50000), new Emp(112, "BBB", "SE", 40000),
+				new Emp(113, "CCC", "SEE", 60000), new Emp(114, "DDD", "SE", 30000), new Emp(115, "EEE", "TL", 125000),
+				new Emp(116, "FFF", "PM", 150000));
+
+		 // filter                  map                         forEach
+	//filter all SE, increment the salaries by 10%, show the SE with incremented salary
+		
+		//employees.stream().filter(emp->emp.getDesg().equals("SE")).map((emp)->{emp.setSal(emp.getSal()+emp.getSal()*10/100);return emp;}).forEach((emp)->System.out.println(emp));
+		
+		//employees.stream().fil
+		
+		Predicate<Emp> predicate=(emp)->emp.getDesg().equals("SE");
+		Function<Emp,Emp> function=(emp)->{emp.setSal(emp.getSal()+emp.getSal()*10/100); return emp;};
+		Consumer<Emp> consumer=(emp)->System.out.println(emp);
+		
+		employees.stream().filter(predicate).map(function).forEach(consumer);
+		
+		
+		
+		/*
+		employees.stream().filter((e)->{
+			if(e.getSal()>=5000) {
+				return true;
+			}else {
+				return false;
+			}
+		}).forEach((e)->{System.out.println(e);});
+		*/
+		
+		}
+
+}
+-------------------------------------------------------------------------------------
+package streams;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class EmpSorting {
+
+	public static void main(String[] args) {
+		List<Emp> employees = Arrays.asList(new Emp(111, "AAA", "SE", 50000), new Emp(112, "BBB", "SE", 40000),
+				new Emp(113, "CCC", "SEE", 60000), new Emp(114, "DDD", "SE", 30000), new Emp(115, "EEE", "TL", 125000),
+				new Emp(116, "FFF", "PM", 150000));
+
+		employees.stream().sorted((e1,e2)->e1.getSal()-e2.getSal()).forEach((emp)->System.out.println(emp));
+	}
+
+}
+-------------------------------------------------------------------------------------
+package streams;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class FilterExampleOne {
+
+	public static void main(String[] args) {
+		
+		List<Integer> numbers=Arrays.asList(12,19,25,44,44,35,89,50,93,98,102,199);
+
+		/*
+		long result=numbers.stream().filter((n)->n%2==0).filter((n)->n%10!=0).count();
+		System.out.println(result);
+		*/
+		
+		//numbers.stream().filter((n)->n%2==0).filter((n)->n%10!=0).forEach((n)->System.out.println(n));
+		
+		//List<Integer> nos=numbers.stream().filter((n)->n%2==0).filter((n)->n%10!=0).collect(Collectors.toList());
+		Set<Integer> nos=numbers.stream().filter((n)->n%2==0).filter((n)->n%10!=0).collect(Collectors.toSet());
+		System.out.println(nos);
+		
+		/*
+		//obtaining a stream from collection
+		
+		Stream<Integer> stream1=numbers.stream();
+
+		Stream<Integer> stream2=stream1.filter((n)->n%2==0);
+		
+		Stream<Integer> stream3=stream2.filter((n)->n%10!=0);
+		
+		stream3.forEach((n)->{
+			n=n*2;
+			System.out.println(n);});
+		*/
+	}
+
+}
+-----------------------------------------------------------------------------------
+package streams;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class MapExampleOne {
+
+	public static void main(String[] args) {
+		List<String> cities=Arrays.asList("indore","bhopal","goa","mhow","banglore","ooty");
+		
+		cities.stream().map((city)->city.length()).forEach((n)->System.out.println(n));
+
+	}
+
+}
+-------------------------------------------------------------------------------------
+package streams;
+
+import java.util.stream.Stream;
+
+public class StreamCreation {
+
+	public static void main(String[] args) {
+		Stream<Integer> streamOfIntegers=Stream.of(10,20,30,40,50);
+		streamOfIntegers.forEach((p)->System.out.println(p));
+		System.out.println("______________________________________________");
+		Stream<String> streamOfStrings=Stream.of("abc","xyz","pqr");
+		streamOfStrings.forEach((s)->System.out.println(s));
+	}
+
+}
+------------------------------------------------------------------------------------
+
+package streams;
+
+import java.util.Date;
+import java.util.stream.Stream;
+
+public class StreamCreationFour {
+
+	public static void main(String[] args) {
+
+		Stream<Double> values=Stream.generate(()->Math.random()).limit(10);
+		values.forEach((n)->System.out.println(n));
+		/*
+		Stream<String> stream = Stream.generate(() -> {
+			Date dt = new Date();
+			return dt.toString();
+		}).limit(500);
+
+		stream.forEach((s)->System.out.println(s));
+		*/
+	}
+
+}
+--------------------------------------------------------------------------------------
+package streams;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
+public class StreamCreationThree {
+
+	public static void main(String[] args) {
+		Set<String> cities=new HashSet<>();
+		//List<String> cities=new ArrayList<>();
+		cities.add("agra"); cities.add("delhi"); cities.add("mumbai"); cities.add("chennai");
+		Stream<String> stream=cities.stream();
+		stream.forEach((s)->System.out.println(s));
+	}
+
+}
+-------------------------------------------------------------------------------------
+package streams;
+
+import java.util.stream.Stream;
+
+public class StreamCreationTwo {
+
+	public static void main(String[] args) {
+	
+		Double numbers[]= {2.4,3.5,4.6,5.7,6.8,7.9,8.0};
+		Stream<Double> streamOfDoubles=Stream.of(numbers);
+		streamOfDoubles.forEach((n)->System.out.println(n));
+	}
+
+}

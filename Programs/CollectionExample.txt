@@ -1,0 +1,819 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class CollectionOfCollectionOne {
+
+	public static void main(String[] args) {
+		
+		List<String> csStudents=Arrays.asList("aaa","bbb","ccc");
+		List<String> itStudents=Arrays.asList("xxx","yyy","zzz");
+		
+		List<List<String>> allStudents=new ArrayList<>();
+		allStudents.add(csStudents);
+		allStudents.add(itStudents);
+		
+		//System.out.println(allStudents);
+		
+		for(List<String> list:allStudents) {
+			for(String item:list) {
+				System.out.println(item);
+			}
+			System.out.println("________________________");
+		}
+		
+		
+	}
+
+}
+-------------------------------------------------------------------------------------
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
+public class CollectionOfCollectionTwo {
+	public static void main(String[] args) {
+
+		List<String> csStudents=Arrays.asList("aaa","bbb","ccc");
+		List<String> itStudents=Arrays.asList("xxx","yyy","zzz");
+		HashMap<String,List<String>> map=new HashMap<>();
+		map.put("cs",csStudents);
+		map.put("it",itStudents);
+		
+		
+		Set<String> keys=map.keySet();
+		
+		for(String key:keys) {
+			System.out.println(key);
+			List<String> list=map.get(key);
+			System.out.println("Values For "+key+" : ");
+			for(String item:list) {
+				System.out.println(item);
+			}
+			System.out.println("__________________");
+		}
+		
+		
+		
+		
+		
+		/*
+		System.out.println(map);
+		List<String> list1=map.get("it");
+		System.out.println(list1);
+		*/
+	}
+}
+-------------------------------------------------------------------------------------
+public class Customer {
+	private int code;
+	private String name;
+	private int age;
+	public int getCode() {
+		return code;
+	}
+	public void setCode(int code) {
+		this.code = code;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public Customer(int code, String name, int age) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.age = age;
+	}
+	public Customer() {
+		super();
+	}
+	@Override
+	public String toString() {
+		return "Customer [code=" + code + ", name=" + name + ", age=" + age + "]";
+	}
+	
+	
+}
+-------------------------------------------------------------------------------------
+
+import java.util.Comparator;
+
+public class CustomerComparator implements Comparator<Customer> {
+
+	@Override
+	public int compare(Customer c1, Customer c2) {
+	
+		//int res=c1.getAge()-c2.getAge();
+		//int res=c1.getCode()-c2.getCode();
+		int res=c1.getName().compareTo(c2.getName());
+		return res;
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class CustomerSorting {
+	public static void main(String[] args) {
+
+		List<Customer> customers=Arrays.asList(new Customer(12433,"Jay",40), new Customer(2340,"Prachi",25), new Customer(53430,"Ashi",45), new Customer(1133,"Simran",60));
+		
+		for(Customer customer:customers) {
+			System.out.println(customer);
+		}
+		System.out.println("_______________________________________________________________");
+		Collections.sort(customers, new CustomerComparator());
+		for(Customer customer:customers) {
+			System.out.println(customer);
+		}
+	}
+}
+-------------------------------------------------------------------------------------
+public class Demo {
+
+	public static int[] compute(int number) {
+		int square=number*number;
+		int cube=square*number;
+		int data[]= {square,cube};
+		return data;
+	}
+	
+	public static void main(String[] args) {
+		int result[]=compute(10);
+		System.out.println(result[0]);
+		System.out.println(result[1]);
+	}
+}
+--------------------------------------------------------------------------------------
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FileListExample {
+
+	public static void showSizes(List<File> files) {
+		for(File file:files) {
+			String name=file.getName();
+			long len=file.length();
+			System.out.println(name + " <==> "+len);
+		}
+	}
+	
+	public static void main(String[] args) {
+		
+		ArrayList<File> fileList=new ArrayList<>();
+		fileList.add(new File("d:/data/info.txt"));
+		fileList.add(new File("d:/data/test.txt"));
+		fileList.add(new File("d:/data/task.txt"));
+		showSizes(fileList);
+
+	}
+
+}
+-------------------------------------------------------------------------------------
+public class GDemo<T> {
+
+	public void display(T p) {
+		
+	}
+	
+	public static void main(String[] args) {
+	
+		GDemo<Integer> ob1=new GDemo<>();
+		ob1.display(10);
+		//ob1.display("abc");
+		
+		
+		GDemo<String> ob2=new GDemo<>();
+		ob2.display("abc");
+		//ob2.display(10);
+		
+		GDemo ob3=new GDemo();
+		ob3.display(10);
+		ob3.display("abc");
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.util.ArrayList;
+
+public class GenericList {
+
+	public static void main(String[] args) {
+
+		ArrayList<Integer> list1=new ArrayList<>();
+		ArrayList<String> list2=new ArrayList<>();
+		//ArrayList list3=new ArrayList();
+		
+		list1.add(10); list1.add(20); list1.add(30);
+		list2.add("indore"); list2.add("bhopal"); list2.add("mumbai");
+		System.out.println(list1);
+		System.out.println(list2);
+		
+
+	}
+
+}
+-------------------------------------------------------------------------------------
+public class GenericMethodOne {
+
+	public <T> void disp(T p) {
+		System.out.println(p.getClass().getName());
+	}
+	public static <T1,T2> void show(T1 p1, T2 p2) {
+		System.out.println(p1.getClass().getName());
+		System.out.println(p2.getClass().getName());
+	}
+	public static void main(String[] args) {
+		//GenericMethodOne ob=new GenericMethodOne();
+		//ob.disp("abc");
+		
+		show(10,"abc");
+	}
+}
+--------------------------------------------------------------------------------------
+import java.util.Stack;
+
+public class GenericOne {
+
+	public static void main(String[] args) {
+		
+		Stack<String> stk=new Stack<>();
+		stk.push("indore");stk.push("bhopal");
+		String result=stk.pop();
+		System.out.println(result);
+		/*
+		Stack stk=new Stack();
+		stk.push("indore");
+		stk.push("dewas");
+		stk.push("bhopal");
+		System.out.println(stk);
+		String result=(String) stk.pop();
+		System.out.println(result);
+		*/
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.Stack;
+
+public class GenericStack {
+
+	public static void main(String[] args) {
+		
+		Stack<String> stk1=new Stack<>();
+		stk1.push("aa"); stk1.push("bb");
+		//stk1.push(10); stk1.push(20);
+		Stack<Integer> stk2=new Stack<>();
+		stk2.push(10); stk2.push(20);
+		//stk2.push("aa"); stk2.push("cd");
+		Stack stk3=new Stack();
+		stk3.push(10); stk3.push(20);
+		stk3.push("ab"); stk3.push("cd");
+		System.out.println(stk1);
+		System.out.println(stk2);
+		System.out.println(stk3);
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.ArrayList;
+
+public class ListExample {
+
+	public static void main(String[] args) {
+		ArrayList list1=new ArrayList();
+		list1.add(10); list1.add(20); list1.add(30);
+		list1.add(1,15); list1.add(3,25);
+		System.out.println(list1);
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class ListExampleThree {
+
+	public static void main(String[] args) {
+		ArrayList<String> list=new ArrayList<>();
+		list.add("AA"); list.add("BB"); list.add("CC"); list.add("DD"); list.add("EE");
+	
+		Iterator<String> it=list.iterator();
+		while(true) {
+			boolean b=it.hasNext();
+			if(b==false)break;
+			System.out.println(it.next());
+		}
+				
+		
+		/*
+		for(int i=0; i<list.size(); i++) {
+			System.out.println(list.get(i));
+		}
+		*/
+		/*
+		for(String item:list) {
+			System.out.println(item);
+		}
+		*/
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.ArrayList;
+
+public class ListExampleTwo {
+
+	public static void main(String[] args) {
+		
+		ArrayList<String> csStudents=new ArrayList<>();
+		ArrayList<String> itStudents=new ArrayList<>();
+		
+		csStudents.add("AA"); csStudents.add("BB");
+		itStudents.add("XX"); itStudents.add("YY");
+		ArrayList<String> allStudents=new ArrayList<>();
+		
+		System.out.println(csStudents);
+		System.out.println(itStudents);
+		System.out.println(allStudents);
+		System.out.println("__________________________________________________________");
+		allStudents.addAll(csStudents);
+		allStudents.addAll(itStudents);
+		System.out.println(csStudents);
+		System.out.println(itStudents);
+		System.out.println(allStudents);
+		System.out.println("__________________________________________________________");
+		//allStudents.removeAll(itStudents);
+		allStudents.clear();
+		System.out.println(csStudents);
+		System.out.println(itStudents);
+		System.out.println(allStudents);
+		
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class ListSorting {
+
+	public static void main(String[] args) {
+		ArrayList<String> list=new ArrayList<>();
+		list.add("india"); list.add("australia"); list.add("canada"); list.add("usa"); list.add("uae");
+		System.out.println(list);
+		
+		Collections.sort(list);
+		
+		System.out.println(list);
+		
+
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Set;
+
+public class MapExampleOne {
+
+	public static void main(String[] args) {
+		// stock prices are :   sbi-3400, icici=3000, maruti-8000, tcs-5500
+		//HashMap,LinkedHashMap,TreeMap
+		
+		HashMap<String,Integer> map=new HashMap<>();
+		//LinkedHashMap<String,Integer> map=new LinkedHashMap<>();
+		//TreeMap<String,Integer> map=new TreeMap<>();
+		map.put("sbi", 3400);
+		map.put("icici", 3000);
+		map.put("maruti", 8000);
+		map.put("tcs", 5500);
+		System.out.println(map);
+		Set<String> set=map.keySet();
+		System.out.println(set);
+		Collection<Integer> values=map.values();
+		System.out.println(values);
+		
+		/*
+		System.out.println(map);
+		map.remove("icici");
+		System.out.println(map);
+		//System.out.println(map.get("maruti"));
+		//System.out.println(map.get("hdfc"));
+		//System.out.println(map.getOrDefault("hdfc", 1000));
+		 * 
+		 */
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.HashMap;
+
+public class MapExampleTwo {
+	public static void main(String[] args) {
+
+		Student s1=new Student(111,"AAA","CS",2);
+		Student s2=new Student(112,"BBB","CS",3);
+		Student s3=new Student(113,"CCC","IT",1);
+		Student s4=new Student(114,"DDD","IT",2);
+		Student s5=new Student(115,"EEE","Civil",3);
+		
+		HashMap<Integer,Student> map=new HashMap<>();
+		map.put(111,s1); 
+		map.put(112,s2);
+		map.put(113,s3);
+		map.put(114,s4);
+		map.put(115,s5);
+		//System.out.println(map);
+		System.out.println(map.get(115));
+	}
+}
+-------------------------------------------------------------------------------------
+import java.util.TreeSet;
+
+public class OrderedAndUnorderedExample {
+
+	public static void main(String[] args) {
+		
+		//ArrayList<String> cities=new ArrayList<>();
+		//HashSet<String> cities=new HashSet<>();
+		//LinkedHashSet<String> cities=new LinkedHashSet<>();
+		TreeSet<String> cities=new TreeSet<>();
+		cities.add("indore"); 
+		cities.add("bhopal");
+		cities.add("delhi");
+		cities.add("chennai");
+		cities.add("bhopal");
+		
+		System.out.println(cities);
+
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.TreeSet;
+
+public class SetExampleOne {
+
+	public static void main(String[] args) {
+		
+		
+		//HashSet<String> set=new HashSet<>();
+		TreeSet<String> set=new TreeSet<>();
+		set.add("indore"); set.add("bhopal"); set.add("delhi"); //set.add(null);
+		System.out.println(set);
+		//ArrayList<String> list=new ArrayList<>(set);
+		
+		//Collections.sort(list);
+		//System.out.println(list);
+		
+		
+		//set.forEach(System.out::println);
+		
+		/*
+		for(String item:set) {
+			System.out.println(item);
+		}
+		*/
+
+	}
+
+}
+------------------------------------------------------------------------------------
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class SortingExample {
+
+	public static void main(String[] args) {
+		
+		ArrayList<String> cities=new ArrayList<>();
+		cities.add("indore"); cities.add("agra"); cities.add("bhopal"); cities.add("ujjain"); cities.add("pune");
+		System.out.println(cities);
+		Collections.sort(cities);	
+		System.out.println(cities);
+		
+		ArrayList<Integer> numbers=new ArrayList<>();
+		numbers.add(10); numbers.add(5); numbers.add(14); numbers.add(25);
+		System.out.println(numbers);
+		Collections.sort(numbers);
+		System.out.println(numbers);
+	}
+
+}
+------------------------------------------------------------------------------------
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class SortingObjects {
+
+	public static void main(String[] args) {
+		Student s1 = new Student(1001, "Rajeev", "CS", 2);
+		Student s2 = new Student(1812, "Amit", "CS", 3);
+		Student s3 = new Student(1513, "Arti", "IT", 1);
+		Student s4 = new Student(2214, "John", "IT", 2);
+		Student s5 = new Student(1215, "Chetana", "Civil", 3);
+
+		ArrayList<Student> students = new ArrayList<>();
+		students.add(s1);
+		students.add(s2);
+		students.add(s3);
+		students.add(s4);
+		students.add(s5);
+
+		for (Student student : students) {
+			System.out.println(student);
+		}
+		System.out.println("__________________________________________________________________");
+		//Collections.sort(students);
+		//Collections.sort(students, new StudentComparator());
+		Collections.sort(students, new StudentNameComparator());
+		for (Student student : students) {
+			System.out.println(student);
+		}
+		
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.util.Comparator;
+
+public class StringComparator implements Comparator<String> {
+
+	@Override
+	public int compare(String s1, String s2) {
+		
+		return s1.length()-s2.length();
+		/*
+		if(s1.length()>s2.length()) {
+			return 1;
+		}else if(s1.length()<s2.length()) {
+			return -1;
+		}else {
+			return 0;
+		}
+		*/
+	}
+
+}
+
+/*
+  if you want first object should be considered greater , return +ve value
+  if you want first object should be considered small, return -ve value
+  if you want both should be considered same return 0.
+*/
+-------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class StringSort {
+
+	public static void main(String[] args) {
+		
+		List<String> cities=Arrays.asList("indore","dehradoon","agra","goa","chennai","banglore");
+		
+		for(String city:cities) {
+			System.out.println(city);
+		}
+		
+		System.out.println("__________________________________________________________");
+		//Collections.sort(cities);
+		Collections.sort(cities, new StringComparator());
+		for(String city:cities) {
+			System.out.println(city);
+		}
+		
+		
+	}
+
+}
+--------------------------------------------------------------------------------------
+public class Student implements Comparable<Student> {
+	private int rno;
+	private String name;
+	private String branch;
+	private int sem;
+	
+	
+	
+	@Override
+	public int compareTo(Student other) {
+		if(this.sem>other.sem) {
+			return 1;
+		}else if(this.sem<other.sem) {
+			return -1;
+		}else {
+			int n=this.name.compareTo(other.name);
+			return n;
+		}
+	}
+	
+	
+	
+	
+	public Student() {
+		super();
+	}
+	public Student(int rno, String name, String branch, int sem) {
+		super();
+		this.rno = rno;
+		this.name = name;
+		this.branch = branch;
+		this.sem = sem;
+	}
+	public int getRno() {
+		return rno;
+	}
+	public void setRno(int rno) {
+		this.rno = rno;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getBranch() {
+		return branch;
+	}
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+	public int getSem() {
+		return sem;
+	}
+	public void setSem(int sem) {
+		this.sem = sem;
+	}
+	@Override
+	public String toString() {
+		return "Student [rno=" + rno + ", name=" + name + ", branch=" + branch + ", sem=" + sem + "]";
+	}
+	
+	
+	
+}
+-------------------------------------------------------------------------------------
+import java.util.Comparator;
+
+public class StudentComparator implements Comparator<Student> {
+
+	@Override
+	public int compare(Student s1, Student s2) {
+		int res=s1.getRno()-s2.getRno();
+		return res;
+	}
+
+}
+------------------------------------------------------------------------------------
+import java.util.ArrayList;
+
+public class StudentList {
+
+	public static void main(String[] args) {
+		
+		Student s1=new Student(111,"AAA","CS",2);
+		Student s2=new Student(112,"BBB","CS",3);
+		Student s3=new Student(113,"CCC","IT",1);
+		Student s4=new Student(114,"DDD","IT",2);
+		Student s5=new Student(115,"EEE","Civil",3);
+		
+		ArrayList<Student> students=new ArrayList<>();
+		students.add(s1); students.add(s2); students.add(s3); students.add(s4); students.add(s5);
+		
+		for(Student student:students) {
+			//if(student.getBranch().equals("CS"))
+			System.out.println(student.getName()+","+student.getBranch());
+		}
+	}
+
+}
+-----------------------------------------------------------------------------------
+import java.util.Comparator;
+
+public class StudentNameComparator implements Comparator<Student> {
+
+	@Override
+	public int compare(Student s1, Student s2) {
+		int n=s1.getName().compareTo(s2.getName());
+		return n;
+	}
+
+}
+-----------------------------------------------------------------------------------
+import java.util.Stack;
+
+public class Test {
+	
+
+	
+	public static void main(String[] args) {
+
+		
+		Stack stk=new Stack();
+		stk.push("abc");
+		stk.push(new StringBuffer("xyz"));
+		stk.push(10);	//new Integer(10)
+		stk.push(2.5);  //new Double(2.5)
+		//Integer ob1=new Integer(10);
+		
+		//stk.push(ob1);
+		
+		//Double ob2=new Double(2.5);
+		//stk.push(ob2);
+		
+	}
+
+}
+------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.List;
+
+public class WildCardExampleOne {
+
+	public static void show(List<? extends Number> items) {
+		System.out.println(items);
+		System.out.println("____________________________________________________");
+	}
+	
+	public static void main(String[] args) {
+		
+		List<Integer> integers=Arrays.asList(10,20,30,40,50);
+		List<Double> doubles=Arrays.asList(1.5,2.5,3.5,4.5,5.5);
+		List<String> strings=Arrays.asList("ab","cd","ef","gh");
+		
+		show(integers);
+		show(doubles);
+		//show(strings);
+		
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.List;
+
+class Stud {
+	
+}
+class Emp {
+	
+}
+
+class EngStud extends Stud {}
+class MediStud extends Stud{}
+class TempEmp extends Emp {}
+class PermEmp extends Emp {}
+
+public class WildCardExampleTwo {
+
+	public static void showSalary(List<? extends Emp> elements) {
+		
+	}
+	public static void showMarks(List<? extends Stud> elements) {
+		
+	}
+	public static void main(String[] args) {
+		List<Stud> studList=Arrays.asList(new Stud(), new Stud());
+		List<EngStud> engStudList=Arrays.asList(new EngStud(), new EngStud());
+		List<MediStud> mediStudList=Arrays.asList(new MediStud(),new MediStud());
+		List<Emp> empList=Arrays.asList(new Emp(),new Emp());
+		List<TempEmp> tempEmpList=Arrays.asList(new TempEmp(), new TempEmp());
+		List<PermEmp> permEmpList=Arrays.asList(new PermEmp(), new PermEmp());
+		List<String> strings=Arrays.asList("ab","cd");
+		
+		showMarks(studList);
+		showMarks(engStudList);
+		showMarks(mediStudList);
+		//showMarks(empList);
+		//showMarks(tempEmpList);
+		//showMarks(permEmpList);
+		//showMarks(strings);
+		//showSalary(studList);
+		//showSalary(engStudList);
+		//showSalary(mediStudList);
+		showSalary(empList);
+		showSalary(tempEmpList);
+		showSalary(permEmpList);
+		//showSalary(strings);
+
+	}
+
+}

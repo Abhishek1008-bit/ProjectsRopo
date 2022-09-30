@@ -1,0 +1,338 @@
+Circle.java
+
+public class Circle {
+	//data members (variables to store the properties of object)
+	private double radius, area, circumference;
+	
+	//methods (code to perform operations on object)
+	
+	
+	
+	
+	public void setRadius(double radius) {
+		this.radius=radius;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(radius);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Circle other = (Circle) obj;
+		if (Double.doubleToLongBits(radius) != Double.doubleToLongBits(other.radius))
+			return false;
+		return true;
+	}
+
+	public Circle(double radius) {
+		super();
+		this.radius = radius;
+	}
+
+	public Circle() {
+		super();
+	}
+
+	public double getRadius() {
+		return radius;
+	}
+	public void computeArea() {
+		area=3.14*radius*radius;
+		System.out.println("Area of Circle With Radius "+radius+" Is "+area);
+	}
+	public void computeCircumference() {
+		circumference=2*3.14*radius;
+		System.out.println("Circumference  :"+circumference);
+	}
+	public static void main(String[] args) {
+		Circle c=new Circle();
+		c.setRadius(10);
+		c.computeArea();
+	}
+}
+
+------------------------------------------------------------------------------------
+CircleUser.java
+
+public class CircleUser {
+
+	public static void main(String[] args) {
+	
+		Circle c1=new Circle();
+		c1.setRadius(100);
+		c1.computeArea();
+		c1.computeCircumference();
+
+		Circle c2=new Circle();
+		c2.setRadius(200);
+		c2.computeArea();
+		c2.computeCircumference();
+		
+		Circle c3=new Circle();
+		c3.setRadius(300);
+		c3.computeArea();
+		c3.computeCircumference();
+	}
+
+}
+--------------------------------------------------------------------------------------
+ComparisonExample.java
+
+public class ComparisonExample {
+
+	public static void main(String[] args) {
+		
+		Circle c1=new Circle(10);
+		
+		Circle c2=new Circle(10);
+		
+		Circle c3=c1;
+		
+		
+		System.out.println(c1==c2);		//references
+		
+		System.out.println(c1.equals(c2)); //members of objects
+		
+		
+		//System.out.println(c1==c3);
+		
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+Demo.java
+public class Demo {
+	
+	private int x, y;
+	
+	public Demo(int a, int b) {
+		x=a; y=b;
+	}
+	
+	public void show() {
+		//int x=5;
+		System.out.println(this.x+","+y);
+	}
+	public static void main(String[] args) {
+	
+		Demo d1=new Demo(10,20);
+		Demo d2=new Demo(30,40);
+		
+		d1.show();
+		d2.show();
+		
+		/*
+		Demo d3=d1;
+		Demo d4=d3;
+		
+		System.out.println("D1 : "+d1.x+","+d1.y);
+		System.out.println("D2 : "+d2.x+","+d2.y);
+		System.out.println("D3 : "+d3.x+","+d3.y);
+		System.out.println("D4 : "+d4.x+","+d4.y);
+		System.out.println("________________________________________________________");
+		
+		d1=new Demo(50,60);
+		
+		System.out.println("D1 : "+d1.x+","+d1.y);
+		System.out.println("D2 : "+d2.x+","+d2.y);
+		System.out.println("D3 : "+d3.x+","+d3.y);
+		System.out.println("D4 : "+d4.x+","+d4.y);
+		System.out.println("________________________________________________________");
+		
+		*/
+--------------------------------------------------------------------------------------
+OverloadingExample.java
+
+public class OverloadingExample {
+
+	public static void add(int a, int b) {
+		System.out.println("Additing 2 Numbers : "+(a+b));
+	}
+	public static void add(int a, int b, int c) {
+		System.out.println("Additing 3 Numbers : "+(a+b+c));
+	}
+	public static void add(int a, int b, int c, int d) {
+		System.out.println("Additing 4 Numbers : "+(a+b+c+d));
+	}
+	public static void add(int a, int b, int c, int d, int e) {
+		System.out.println("Additing 5 Numbers : "+(a+b+c+d+e));
+	}
+	public static void main(String[] args) {
+		add(10,20);
+		add(10,20,30);
+		add(10,20,30,40);
+		add(10,20,30,40,50);
+		
+
+	}
+
+}
+		
+		
+		
+		
+		
+	}
+}
+--------------------------------------------------------------------------------------
+ResultProcessing.java
+public class ResultProcessing {
+
+	public static void main(String[] args) {
+
+		// here we need to process the result of 3 students.
+
+		Student s1 = new Student(111,"AAA",90);
+		Student s2 = new Student(112,"BBB",80);
+		Student s3 = new Student(113,"CCC");
+		
+/*
+		s1.setRno(111);
+		s1.setName("AAA");
+		s1.setMarks(90);
+
+		s2.setRno(222);
+		s2.setName("BBB");
+		s2.setMarks(30);
+
+		s3.setRno(333);
+		s3.setName("CCC");
+		s3.setMarks(98);
+*/
+		s1.printReportCard();
+		s2.printReportCard();
+		s3.printReportCard();
+
+		Student.showAvg(s1, s2);
+		Student.showAvg(s1, s2, s3);
+
+		// s1.showAvg(s2);
+		// s2.showAvg(s3);
+		// s1.showAvg(s3);
+
+		// Student.showTotalStudents();
+		// Student.showOverallResult();
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+Student.java
+public class Student {
+	
+	private int rno;
+	private String name;
+	private int marks;
+	private static int noOfStudents;
+	private static int totalPassed;
+	private static int totalFailed;
+	
+	
+	
+	
+	public Student(int rno, String name) {
+		this.rno = rno;
+		this.name = name;
+	}
+	public Student(int rno, String name, int marks) {
+		this.rno = rno;
+		this.name = name;
+		this.marks = marks;
+	}
+	public int getRno() {
+		return rno;
+	}
+	public void setRno(int rno) {
+		this.rno = rno;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getMarks() {
+		return marks;
+	}
+	public void setMarks(int marks) {
+		this.marks = marks;
+	}
+	public static void showAvg(Student tmp1, Student tmp2, Student tmp3) {
+		System.out.println("Avg of 3  : "+(tmp1.marks+tmp2.marks+tmp3.marks)/3);
+	}
+	public static void showAvg(Student tmp1, Student tmp2) {
+		System.out.println("Avg of 2  : "+(tmp1.marks+tmp2.marks)/2);
+	}
+	
+	public static void showOverallResult() {
+		System.out.println("Total Passed Candidates : "+totalPassed+", Total Failed Candidates : "+totalFailed);
+	}
+	public static void showTotalStudents() {
+		System.out.println("Total No of Students : "+noOfStudents);
+	}
+	
+	public void printReportCard() {
+		System.out.println("Roll Number : "+rno);
+		System.out.println("Name        : "+name);
+		System.out.println("Marks       : "+marks);
+		if(marks>=33) {
+			System.out.println("PASSED..!");
+			totalPassed++;
+		}else {
+			System.out.println("FAILED..!");
+			totalFailed++;
+		}
+		System.out.println("_______________________________________");
+		noOfStudents++;
+	}
+}
+-------------------------------------------------------------------------------------
+VarArgExample.java
+public class VarArgExample {
+
+	public static void show(String... s) {
+		for(String tmp:s) {
+			System.out.println(tmp);
+		}
+		System.out.println("______________________________________________________________");
+	}
+	public static void add(int...  v) {		//int varargs (0 to n number of integer accept)
+		
+		int sum=0;
+		
+		for(int i=0; i<v.length; i++) {
+			sum=sum+v[i];
+		}
+		System.out.println("SUM : "+sum);
+		
+	}
+	public static void main(String[] args) {
+
+		add();		//{}
+		add(10,20);	//{10,20}
+		add(10,20,30);	//{10,20,30}
+		add(10,20,30,40);
+		add(10,20,30,40,50);
+		add(1,2,3,4,5,6,7,8,9,10);	//{1,2,3,4,5,6,7,8,9,10}
+		show("indore");
+		show("indore","bhopal");
+		show("mumbai","delhi","chennai");
+		
+
+	}
+
+}

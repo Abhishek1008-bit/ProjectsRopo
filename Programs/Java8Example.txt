@@ -1,0 +1,748 @@
+public interface Billable {
+	void generateBill();
+	void generateSalesTax();
+	default void generateGST() {
+		System.out.println("Computing GST For All...");
+	}
+	
+}
+-------------------------------------------------------------------------------------
+public class BillingApp {
+public static void main(String[] args) {
+	OnlineShopping os=new OnlineShopping();
+	os.generateBill();
+	os.generateSalesTax();
+	os.generateGST();
+	System.out.println("___________________________________________________");
+	DepartmentalStore ds=new DepartmentalStore();
+	ds.generateBill();
+	ds.generateSalesTax();
+	ds.generateGST();
+}
+}
+-------------------------------------------------------------------------------------
+import java.util.function.BiPredicate;
+
+public class BiPredicateExample {
+	public static void main(String[] args) {
+
+		BiPredicate<Integer,Integer> bpr1=(n1,n2)->n1%n2==0;
+		boolean res1=bpr1.test(10, 4);
+		System.out.println(res1);
+		
+		BiPredicate<String,Integer> bpr2=(s,n)->s.length()==n;
+		boolean res2=bpr2.test("indore", 6);
+		System.out.println(res2);
+		
+		BiPredicate<Product,Product> bpr3=(p1,p2)->p1.getPrice()>p2.getPrice();
+		boolean res3=bpr3.test(new Product(111,"AAA",500), new Product(112,"BBB",650));
+		System.out.println(res3);
+		
+	}
+}
+--------------------------------------------------------------------------------------
+
+public interface Demo {
+	default void generateGST() {
+		System.out.println("Computing Demo...");
+	} 
+	public static void main(String args[]) {
+		System.out.println("Main Of Demo...");
+	}
+}
+-------------------------------------------------------------------------------------
+public class DepartmentalStore implements Billable, Demo {
+
+	@Override
+	public String toString() {
+		return "hello";
+	}
+	
+	@Override
+	public void generateBill() {
+		System.out.println("Generatig Bill For Dept Store...");
+	}
+
+	@Override
+	public void generateSalesTax() {
+		System.out.println("Generating Sales Tax For Dept Store...");
+		
+	}
+
+	public void generateGST() {
+		//Billable.super.generateGST();
+		//Demo.super.generateGST();
+		System.out.println("Own Logic For GST...");
+	}
+}
+--------------------------------------------------------------------------------------
+public class DisplayMessage {
+	public static void show() {
+		System.out.println("Hello User, How Are You Doing? ...");
+	}
+	public void display() {
+		System.out.println("Hello User, Hope You Are Doing Well?...");
+	}
+}
+--------------------------------------------------------------------------------------
+public class Emp {
+	private int eno;
+	private String name;
+	private double sal;
+	
+	public Emp(int eno, String name, double sal) {
+		super();
+		this.eno = eno;
+		this.name = name;
+		this.sal = sal;
+	}
+	public int getEno() {
+		return eno;
+	}
+	public void setEno(int eno) {
+		this.eno = eno;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public double getSal() {
+		return sal;
+	}
+	public void setSal(double sal) {
+		this.sal = sal;
+	}
+	@Override
+	public String toString() {
+		return "Emp [eno=" + eno + ", name=" + name + ", sal=" + sal + "]";
+	}
+	
+}
+--------------------------------------------------------------------------------------
+public class EmpService {
+	public static int getSalDiff(Emp e1, Emp e2) {
+		return (int)(e1.getSal()-e2.getSal());
+	}
+}
+--------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class EmpSort {
+	public static void main(String[] args) {
+		Emp e1 = new Emp(1001, "Amit", 43000.55);
+		Emp e2 = new Emp(5430, "Rajesh", 90450.65);
+		Emp e3 = new Emp(2340, "Chetan", 23400.55);
+		List<Emp> employees = Arrays.asList(e1, e2, e3);
+		for (Emp employee : employees) {
+			System.out.println(employee);
+		}
+		System.out.println("Sorting List....");
+		Comparator<Emp> comparator=EmpService::getSalDiff;
+		Collections.sort(employees,comparator);
+		//Collections.sort(employees, EmpService::getSalDiff);
+		//Collections.sort(employees, (ob1,ob2)->(int)(ob1.getSal()-ob2.getSal()));
+		/*
+		Collections.sort(employees, (e11,e12)->{
+			if(e11.getSal()>e12.getSal()) {
+				return 1;
+			}else if(e11.getSal()<e12.getSal()) {
+				return -1;
+			}else {
+				return 0;
+			}
+		});
+		*/
+		for (Emp employee : employees) {
+			System.out.println(employee);
+		}
+		System.out.println("Sorting List....");
+	}
+}
+--------------------------------------------------------------------------------------
+public class EnglishGreeting implements Greeting {
+
+	@Override
+	public void greet() {
+		System.out.println("Welcome..!");
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.List;
+
+public class ForEachMethod {
+	public static void main(String[] args) {
+
+		List<Product> products=Arrays.asList(new Product(111,"AAA",500), new Product(112,"BBB",600), new Product(113,"CCC",700));
+		products.forEach((product)->System.out.println(product));
+		System.out.println("_________________________________________________");
+		products.forEach((product)->product.setPrice(product.getPrice()+10));
+		products.forEach((product)->System.out.println(product));
+		System.out.println("_________________________________________________");
+		products.forEach((product)->product.setCode(product.getCode()+500));
+		products.forEach((product)->System.out.println(product));
+	
+		/*
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		System.out.println("Now increasing price of each product by 5 Rs.");
+		for(Product product:products) {
+			product.setPrice(product.getPrice()+5);
+		}
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		System.out.println("Now increasing code of each product by 1000");
+		for(Product product:products) {
+			product.setCode(product.getCode()+1000);
+		}
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		*/
+	}
+}
+--------------------------------------------------------------------------------------
+import java.util.function.Function;
+
+public class FunctionExample {
+
+	
+	public static void main(String[] args) {
+		
+		Function<Integer,Integer> f1=(n)->n*n;
+		System.out.println(f1.apply(10));
+
+		Function<Product,Integer> f2=(p)->p.getPrice()*10/100;
+		System.out.println(f2.apply(new Product(111,"Abc",800)));
+		
+		Function<Product,Product> f3=(p1)->{
+			return new Product(p1.getCode()+1,"NewProduct",p1.getPrice()+100);
+		};
+		
+		System.out.println(f3.apply(new Product(101,"xyz",500)));
+	}
+
+}
+--------------------------------------------------------------------------------------
+public interface Greeting {
+	public void greet();
+}
+--------------------------------------------------------------------------------------
+public class GreetingApplication {
+
+	public static void showGreeting(Greeting greeting) {
+		greeting.greet();
+	}
+
+	public static void main(String[] args) {
+
+		showGreeting(new HindiGreeting());
+		showGreeting(new EnglishGreeting());
+		showGreeting(new FrenchGreeting());
+		
+		Greeting gr = new Greeting() {
+			@Override
+			public void greet() {
+				System.out.println("SomeGreeting By A Class Without Name..");
+			}
+		};
+		showGreeting(gr);
+
+		showGreeting(new Greeting() {
+			public void greet() {
+				System.out.println("Another Greeting By Another Anonomous Class..!");
+			}
+		});
+	
+	
+	}
+
+	static class FrenchGreeting implements Greeting {
+		public void greet() {
+			System.out.println("SomeGreetingInFrench....!");
+		}
+	}
+
+}
+--------------------------------------------------------------------------------------
+public class HindiGreeting implements Greeting {
+	@Override
+	public void greet() {
+		System.out.println("Namaste...!");
+	}
+}
+--------------------------------------------------------------------------------------
+public class LambdaOne {
+	public static void main(String[] args) {
+
+		GreetingApplication.showGreeting(() -> System.out.println("My First Greeting...!"));
+		GreetingApplication.showGreeting(() -> System.out.println("My Second Greeting...!"));
+
+	}
+}
+--------------------------------------------------------------------------------------
+public class LambdaOne {
+	public static void main(String[] args) {
+
+		GreetingApplication.showGreeting(() -> System.out.println("My First Greeting...!"));
+		GreetingApplication.showGreeting(() -> System.out.println("My Second Greeting...!"));
+
+	}
+}
+--------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class LambdaTwo {
+
+	public static void main(String[] args) {
+		
+
+		List<Product> products=Arrays.asList(new Product(1001,"Mouse",5000), new Product(501,"Bike",45000), new Product(4001,"Led",25000), new Product(1241,"Sofa",51000), new Product(21001,"Almirah",15000) );
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		System.out.println("Now Sorting On Price===========================================>");
+		
+		Collections.sort(products,(p1, p2)->p1.getPrice()-p2.getPrice());
+		
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		
+		System.out.println("Now Sorting On Code===========================================>");
+		Collections.sort(products, (p1,p2)->p1.getCode()-p2.getCode());
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		System.out.println("Now Sorting On Code===========================================>");
+		Collections.sort(products, (p1,p2)->p1.getName().compareTo(p2.getName()));
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		
+	}
+
+}
+--------------------------------------------------------------------------------------
+public class MethodRefExampleOne {
+
+	public static void main(String[] args) {
+
+		//Greeting greeting=DisplayMessage::show;
+		//Greeting greeting=new DisplayMessage()::display;
+		//GreetingApplication.showGreeting(greeting);
+		
+		GreetingApplication.showGreeting(DisplayMessage::show);
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.util.function.Predicate;
+
+public class NumberGame {
+	public static boolean isLuckyNumber(Integer number, Predicate<Integer> predicate) {
+		return predicate.test(number);
+	}
+
+	public static void main(String[] args) {
+
+		boolean res=isLuckyNumber(40, (n)->n%2==0);
+
+		System.out.println(res);
+	}
+}
+--------------------------------------------------------------------------------------
+public class OnlineShopping implements Billable{
+
+	@Override
+	public void generateBill() {
+		System.out.println("Online Shopping Bill Generated..");
+		
+	}
+
+	@Override
+	public void generateSalesTax() {
+		System.out.println("Online Sales Tax Generated..");
+		
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
+public class PredicateExample {
+
+	public static boolean isTaxPayer(Emp emp) {
+		if(emp.getSal()>=50000) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public static boolean isTaxPayer(Emp emp, Predicate<Emp> predicate) {
+		boolean res=predicate.test(emp);
+		return res;
+	}
+	
+	public static void main(String[] args) {
+		boolean res=isTaxPayer(new Emp(111,"AAA",66000));
+		//boolean res=isTaxPayer(new Emp(111,"AAA",46000), (emp)->emp.getSal()>50000);
+		System.out.println(res);
+		
+		
+	}
+
+}
+
+-------------------------------------------------------------------------------------
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
+public class PredicateExample {
+
+	public static boolean isTaxPayer(Emp emp) {
+		if(emp.getSal()>=50000) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public static boolean isTaxPayer(Emp emp, Predicate<Emp> predicate) {
+		boolean res=predicate.test(emp);
+		return res;
+	}
+	
+	public static void main(String[] args) {
+		boolean res=isTaxPayer(new Emp(111,"AAA",66000));
+		//boolean res=isTaxPayer(new Emp(111,"AAA",46000), (emp)->emp.getSal()>50000);
+		System.out.println(res);
+		
+		
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.List;
+
+public class PredicateExampleWithStream {
+
+	public static void main(String[] args) {
+		List<Product> products=Arrays.asList(new Product(111,"AAA",500), new Product(112,"BBB",600), new Product(113,"CCC",700));
+		
+		products.forEach((product)->System.out.println(product));
+		System.out.println("__________________________________________________________");
+		products.stream().filter((p)->p.getCode()<113).forEach(System.out::println);
+		
+
+	}
+
+}
+-------------------------------------------------------------------------------------
+public class Product {
+	private int code;
+	private String name;
+	private int price;
+	
+	@Override
+	public String toString() {
+		return "Product [code=" + code + ", name=" + name + ", price=" + price + "]";
+	}
+	public Product(int code, String name, int price) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.price = price;
+	}
+	public int getCode() {
+		return code;
+	}
+	public void setCode(int code) {
+		this.code = code;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	
+}
+-------------------------------------------------------------------------------------
+import java.util.Comparator;
+
+public class ProductComparator implements Comparator<Product> {
+
+	@Override
+	public int compare(Product p1, Product p2) {
+		int res=p1.getPrice()-p2.getPrice();
+		if(res>0) {
+			return 1;
+		}else if(res<0) {
+			return -1;
+		}else {
+			int r=p1.getCode()-p2.getCode();
+			if(r>0) {
+				return 1;
+			}else if(r<0) {
+				return -1;
+			}else {
+				return 0;
+			}
+		}
+	}
+
+}
+-------------------------------------------------------------------------------------
+
+import java.util.Comparator;
+
+public class ProductComparatorCode implements Comparator<Product> {
+
+	@Override
+	public int compare(Product p1, Product p2) {
+		return p1.getCode()-p2.getCode();
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class ProductList {
+
+	public static void main(String[] args) {
+		
+		List<Product> products=Arrays.asList(new Product(1001,"Mouse",5000), new Product(501,"Bike",45000), new Product(4001,"Led",25000), new Product(1241,"Sofa",51000), new Product(21001,"Almirah",15000) );
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		System.out.println("Now Sorting On Price===========================================>");
+		//Collections.sort(products);
+		Collections.sort(products, new ProductComparator());
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		System.out.println("Now Sorting On Code============================================>");
+		Collections.sort(products, new ProductComparatorCode());
+		for(Product product:products) {
+			System.out.println(product);
+		}
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+public class ProductService {
+	
+	public static void increase(Product product, Consumer<Product> consumer) {
+		consumer.accept(product);
+	}
+	public static boolean isGSTApplicable(Product product, Predicate<Product> predicate) {
+		return predicate.test(product);
+	}
+	public static void main(String[] args) {
+		boolean res=isGSTApplicable(new Product(1000,"AA",340), (product)->product.getPrice()>=500);
+		System.out.println(res);
+		
+		Product p=new Product(1000,"Mouse",500);
+		System.out.println(p);
+		increase(p,(product)->{product.setPrice(product.getPrice()+50);});
+		System.out.println(p);
+	}
+}
+-------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class ProductSorting {
+
+	public static void main(String[] args) {
+		List<Product> products=Arrays.asList(new Product(1001,"Mouse",5000), new Product(501,"Bike",45000), new Product(4001,"Led",25000), new Product(1241,"Sofa",51000), new Product(21001,"Almirah",15000) );
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		System.out.println("Now Sorting On Code===========================================>");
+		Collections.sort(products, new Comparator<Product>() {
+
+			@Override
+			public int compare(Product p1, Product p2) {
+				// TODO Auto-generated method stub
+				return p1.getCode()-p2.getCode();
+			}
+			
+		});
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		
+		System.out.println("Now Sorting On Code===========================================>");
+
+		//Collections.sort(products, (p1,p2)->p1.getPrice()-p2.getPrice());
+		
+		
+		Collections.sort(products, new Comparator<Product>() {
+
+			@Override
+			public int compare(Product p1, Product p2) {
+				return p1.getPrice()-p2.getPrice();
+			}
+			
+		});
+		
+		for(Product product:products) {
+			System.out.println(product);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+}
+-------------------------------------------------------------------------------------
+@FunctionalInterface
+public interface Sample {
+	void test();
+	public static void disp() {}
+	default void show() {}
+	default void print() {}
+}
+-------------------------------------------------------------------------------------
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class StreamExampleOne {
+
+	public static void main(String[] args) {
+		List<Product> products = Arrays.asList(new Product(1001, "Mouse", 500), new Product(501, "Bike", 45000),
+				new Product(4001, "Led", 25000), new Product(1241, "Sofa", 51000),
+				new Product(21001, "Almirah", 15000), new Product(56042,"Keyboard",1200), new Product(13340,"LED",3500));
+	
+		products.stream().filter((p)->p.getPrice()<5000).map((p)->{p.setPrice(p.getPrice()+(p.getPrice()*10/100));return p;}).forEach(System.out::println);		
+		/*
+		for (Product product : products) {
+			System.out.println(product);
+		}
+		System.out.println("______________________________________________");
+		List<Product> lowPrice=new ArrayList<>();
+		//we need to display those products which are having price less than 5000
+		for(Product product:products) {
+			if(product.getPrice()<5000) {
+				lowPrice.add(product);
+			}
+		}
+		//we need to increase the price of all products having price less than 5000 by 10%
+		for(Product product:lowPrice) {
+			product.setPrice(product.getPrice()+(product.getPrice()*10/100));
+		}
+		//we need to display the list with incremented price
+		for(Product product:lowPrice) {
+			System.out.println(product);
+		}
+		*/
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+
+public class StringSort {
+
+	public static void main(String[] args) {
+	
+		List<String> items=Arrays.asList("india","australia","canada","usa","uk");
+		
+		Comparator<String> comp=new Comparator<String>() {
+
+			@Override
+			public int compare(String o1, String o2) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+		};
+
+	}
+
+}
+-------------------------------------------------------------------------------------
+import java.util.Date;
+import java.util.function.Supplier;
+
+public class SupplierExample {
+
+	public static void main(String[] args) {
+		
+		Supplier<String> supplier1=()->{
+			Date dt=new Date();
+			return dt.toString();
+		};
+		System.out.println(supplier1.get());
+		
+		
+		Supplier<Product> supplier2=()->new Product(111,"XYZ",500);
+		System.out.println(supplier2.get());
+	}
+
+}
+-------------------------------------------------------------------------------------
+public interface Test {
+	void m1();
+	void m2();
+	default void m3() {
+		
+	}
+	static void m4() {
+		
+	}
+	public static void main(String argrs[]) {
+		System.out.println("hello");
+	}
+}
+/*
+	till java7 , interfaces allows only abstract methods.
+	concrete methods and static methods were not allowed.
+	but java8 onwards you can use concrete methods (non-static) 
+	and static methods also in interfaces
+*/
+-------------------------------------------------------------------------------------
+public class Trial implements Demo{
+	
+	public static void main(String argrs[]) {
+		System.out.println("Main Of Trial...!");
+	}
+	
+}

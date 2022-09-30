@@ -1,0 +1,209 @@
+import java.util.Scanner;
+
+class InvalidPriceException extends Exception {
+}
+
+public class BillingApplication {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter Unit Price : ");
+		int unitPrice = 0;
+		try {
+			unitPrice = sc.nextInt();
+			if (unitPrice <= 0) {
+				InvalidPriceException ob = new InvalidPriceException();
+				throw ob;
+			}
+		} catch (InvalidPriceException e) {
+			System.out.println("Negative Or Zero Price Not Allowed ...!");
+			unitPrice = 10;
+		}
+		System.out.println("Enter No Of Items Sold : ");
+		int qty = sc.nextInt();
+		int billAmount = qty * unitPrice;
+		System.out.println("Qty Sold : " + qty);
+		System.out.println("Unit Price : " + unitPrice);
+		System.out.println("Bill Amount Rs. " + billAmount);
+
+	}
+
+}
+--------------------------------------------------------------------------------------
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
+public class Demo {
+
+	public static void main(String[] args) {
+		
+		String fileName=args[0];
+		System.out.println("File you are trying to open is "+fileName);
+
+		try {
+			FileReader fr=new FileReader(fileName);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("File Opened Successfully...!");
+		
+	}
+
+}
+/*
+                 ArrayIndexOutOfBoundsException (not reported by compiler, can be ignored also) UncheckedException
+                 FileNotFoundException (reported by compiler)(must be handle) checked exception
+
+*/
+-------------------------------------------------------------------------------------
+public class ExceptionOne {
+	public static void main(String[] args) {
+		System.out.println("Start-of-Main...!");
+		int x = 0, y = 0, z = 0;
+
+		try {
+			x = Integer.parseInt(args[0]);
+			y = Integer.parseInt(args[1]);
+			z = x / y;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("Insufficient values....!");
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid numbers....!");
+		} catch (ArithmeticException e) {
+			z = x / 2;
+		} catch (Exception e) {
+			System.out.println("Unknown exception...!");
+		}
+
+		System.out.println("Result  : " + z);
+		System.out.println("End-of-Main...!");
+	}
+
+}
+-------------------------------------------------------------------------------------
+public class ExceptionPropogation {
+
+	public static void div(int a, int b) {
+		System.out.println("Starting-div...!");
+		try {
+			System.out.println(a / b);
+		} catch (ArithmeticException e) {
+			System.out.println("Handled In div...!");
+		}
+		System.out.println("Ending-div...!");
+	}
+
+	public static void callDiv(int i, int j) {
+		System.out.println("Starting-callDiv...!");
+		try {
+			div(i, j);
+		} catch (ArithmeticException e) {
+			System.out.println("Handled In callDiv...!");
+		}
+		System.out.println("Ending-callDiv...!");
+	}
+
+	public static void main(String[] args) {
+		System.out.println("Statring-main...!");
+		try {
+			callDiv(20, 0);
+		} catch (ArithmeticException e) {
+			System.out.println("Handled In main...!");
+		}
+		System.out.println("Ending-main...!");
+
+	}
+
+}
+-------------------------------------------------------------------------------------
+public class ExceptionTwo {
+	public static void main(String[] args) {
+		System.out.println("Start-of-Main...!");
+		int x = 0, y = 0, z = 0;
+
+		try {
+			x = Integer.parseInt(args[0]);
+			y = Integer.parseInt(args[1]);
+			z = x / y;
+		} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+			System.out.println("Invalid inputs....!");
+		} catch (ArithmeticException e) {
+			z = x / 2;
+		} catch (Exception e) {
+			System.out.println("Unknown exception...!");
+		}
+
+		System.out.println("Result  : " + z);
+		System.out.println("End-of-Main...!");
+	}
+}
+--------------------------------------------------------------------------------------
+public class FinallyExample {
+
+	public static void main(String[] args) {
+		System.out.println("Start-of-Main...!");
+		int x = 0, y = 0, z = 0;
+
+		try {
+			x = Integer.parseInt(args[0]);
+			y = Integer.parseInt(args[1]);
+			z = x / y;
+			System.out.println("Try Completed Successfully...!");
+		} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+			System.out.println("Exception Occurs...!");
+			System.out.println("Invalid inputs....!");
+		} finally {
+			System.out.println("Finally Is Running....!");
+		}
+		System.out.println("Outside Finally...!");
+		System.out.println("Result  : " + z);
+		System.out.println("End-of-Main...!");
+	}
+
+}
+-------------------------------------------------------------------------------------
+public class ThrowExample {
+	public static void main(String[] args) {
+		System.out.println("Start-of-Main...!");
+		int x = 0, y = 0, z = 0;
+
+		try {
+			x = Integer.parseInt(args[0]);
+			y = Integer.parseInt(args[1]);
+			if(y>x) {
+				ArithmeticException ob=new ArithmeticException();
+				throw ob;
+			}
+			z = x / y;
+		}catch (ArithmeticException e) {
+			System.out.println("Handling ArithmaticException");
+			z = x / 2;
+		} 
+
+		System.out.println("Result  : " + z);
+		System.out.println("End-of-Main...!");
+	}
+}
+--------------------------------------------------------------------------------------
+import java.io.IOException;
+import java.io.InputStream;
+
+public class ThrowsExample {
+	public static void m1() throws Exception {
+		InputStream is=null;
+		is.read();
+		
+		Class.forName("abc");
+	}
+
+	public static void m2() throws Exception {
+		m1();
+	}
+
+	public static void main(String[] args) throws Exception {
+		m2();
+	}
+}
+--------------------------------------------------------------------------------------
